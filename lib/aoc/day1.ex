@@ -1,16 +1,12 @@
 defmodule AOC.Day1 do
-  def part1(data) do
-    data
-    |> String.split("\n")
-    |> Enum.reject(&(&1 == ""))
-    |> Enum.map(&String.to_integer/1)
+  def part1(data_stream) do
+    data_stream
+    |> Stream.map(&String.to_integer/1)
     |> Enum.sum
   end
 
-  def part2(data) do
-    data
-    |> String.split("\n")
-    |> Enum.reject(&(&1 == ""))
+  def part2(data_stream) do
+    data_stream
     |> Enum.map(&String.to_integer/1)
     |> Stream.cycle
     |> Stream.scan({0, :not_found, MapSet.new([0])}, fn

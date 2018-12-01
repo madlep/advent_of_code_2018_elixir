@@ -1,6 +1,15 @@
 defmodule AOC.Day1Test do
   use ExUnit.Case
 
+  import AOC.Result
+
+  def stream(data) do
+    data
+    |> StringIO.open |> ok!
+    |> IO.stream(:line)
+    |> Stream.map(&String.trim/1)
+  end
+
   describe "part1" do
     test "provided data 1" do
       data = """
@@ -8,7 +17,7 @@ defmodule AOC.Day1Test do
 +1
 +1
 """
-      assert AOC.Day1.part1(data) == 3
+      assert AOC.Day1.part1(data |> stream) == 3
     end
 
     test "provided data 2" do
@@ -17,7 +26,7 @@ defmodule AOC.Day1Test do
 +1
 -2
 """
-      assert AOC.Day1.part1(data) == 0
+      assert AOC.Day1.part1(data |> stream) == 0
     end
 
     test "provided data 3" do
@@ -26,7 +35,7 @@ defmodule AOC.Day1Test do
 -2
 -3
 """
-      assert AOC.Day1.part1(data) == -6
+      assert AOC.Day1.part1(data |> stream) == -6
     end
   end
 
@@ -36,7 +45,7 @@ defmodule AOC.Day1Test do
 +1
 -1
 """
-      assert AOC.Day1.part2(data) == 0
+      assert AOC.Day1.part2(data |> stream) == 0
     end
 
     test "provided data 2" do
@@ -47,7 +56,7 @@ defmodule AOC.Day1Test do
 -2
 -4
 """
-      assert AOC.Day1.part2(data) == 10
+      assert AOC.Day1.part2(data |> stream) == 10
     end
 
     test "provided data 3" do
@@ -58,7 +67,7 @@ defmodule AOC.Day1Test do
 +5
 -6
 """
-  assert AOC.Day1.part2(data) == 5
+      assert AOC.Day1.part2(data |> stream) == 5
     end
 
     test "provided data 4" do
@@ -69,7 +78,7 @@ defmodule AOC.Day1Test do
 -7
 -4
 """
-      assert AOC.Day1.part2(data) == 14
+      assert AOC.Day1.part2(data |> stream) == 14
     end
   end
 end
