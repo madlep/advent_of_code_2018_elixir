@@ -9,21 +9,16 @@ defmodule AOC.Day1 do
     data_stream
     |> Enum.map(&String.to_integer/1)
     |> Stream.cycle
-    |> Stream.scan({0, :not_found, MapSet.new([0])}, fn
-      i, {current, :not_found, seen} ->
+    |> Stream.transform({0, MapSet.new([0])}, fn
+      i, {current, seen} ->
         new_current = current + i
         if MapSet.member?(seen, new_current) do
-          {new_current, :found, seen}
+          {[new_current], :done}
         else
-          {new_current, :not_found, MapSet.put(seen, new_current)}
+          {[new_current], {new_current, MapSet.put(seen, new_current)}}
         end
-      _i, acc -> acc
-      end)
-    |> Stream.filter(fn {_current, :not_found, _seen} -> false
-                        {_current, :found, _seen}      -> true
+      _i, :done -> {:halt, :done}
     end)
-    |> Stream.take(1)
-    |> Enum.at(0)
-    |> elem(0)
+    |> Enum.at(-1)
   end
 end
