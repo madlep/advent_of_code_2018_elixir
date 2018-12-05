@@ -25,7 +25,7 @@ defmodule AOC do
 
   defp stream(file_path, f) do
     file_path
-    |> File.open([:read], fn(io) ->
+    |> File.open([:read], fn io ->
       io
       |> IO.stream(:line)
       |> Stream.map(&String.trim/1)
