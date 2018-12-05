@@ -45,4 +45,36 @@ defmodule AOC.Day2Test do
       end)
     end
   end
+
+  describe "word diff counts" do
+    def g(word), do: word |> String.graphemes()
+
+    test "handles same word" do
+      assert AOC.Day2.diff_count(g("abcdef"), g("abcdef")) == 0
+    end
+
+    test "handles differences up to max" do
+      assert AOC.Day2.diff_count(g("abcdef"), g("abcxef")) == 1
+    end
+
+    test "returns :exceeded if more than max differences" do
+      assert AOC.Day2.diff_count(g("abcdef"), g("abxdxf")) == :exceeded
+    end
+  end
+
+  describe "part 2" do
+    @data """
+    abcde
+    fghij
+    klmno
+    pqrst
+    fguij
+    axcye
+    wvxyz
+    """
+
+    test "finds word with only one difference" do
+      assert AOC.Day2.part2(@data |> stream) == "fgij"
+    end
+  end
 end
