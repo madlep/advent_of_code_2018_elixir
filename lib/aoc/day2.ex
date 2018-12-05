@@ -5,18 +5,18 @@ defmodule AOC.Day2 do
     end
   end
 
+  defp checksum_components(data_stream) do
+    data_stream
+    |> Stream.map(&letter_count_set/1)
+    |> Enum.reduce(%{}, fn lcs, totals -> lcs |> count_values(totals) end)
+  end
+
   def letter_count_set(str) do
     str
     |> String.graphemes()
     |> count_values()
     |> Map.values()
     |> MapSet.new()
-  end
-
-  defp checksum_components(data_stream) do
-    data_stream
-    |> Stream.map(&letter_count_set/1)
-    |> Enum.reduce(%{}, fn lcs, totals -> lcs |> count_values(totals) end)
   end
 
   defp count_values(map, initial_acc \\ %{}) do
