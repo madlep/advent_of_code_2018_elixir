@@ -1,16 +1,26 @@
 defmodule AOC do
   def run() do
-    day1()
+    1..25 |> Enum.each(&day/1)
   end
 
-  def day1() do
-    stream "priv/data/day1.txt", fn data_stream ->
-      IO.inspect(AOC.Day1.part1(data_stream), label: :day1_part1)
-    end
+  @parts 1..2
 
-    stream "priv/data/day1.txt", fn data_stream ->
-      IO.inspect(AOC.Day1.part2(data_stream), label: :day1_part2)
-    end
+  defp day(n) do
+    data_file = "priv/data/day#{n}.txt"
+    mod = Module.concat(AOC, "Day#{n}" |> String.to_atom())
+    Code.ensure_loaded?(mod)
+
+    @parts
+    |> Enum.each(fn part ->
+      part_fun = "part#{part}" |> String.to_atom()
+
+      if function_exported?(mod, part_fun, 1) do
+        stream(data_file, fn data_stream ->
+          apply(mod, part_fun, [data_stream])
+          |> IO.inspect(label: "Day #{n}, part #{part}")
+        end)
+      end
+    end)
   end
 
   defp stream(file_path, f) do
