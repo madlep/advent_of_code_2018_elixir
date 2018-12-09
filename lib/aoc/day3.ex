@@ -38,16 +38,16 @@ defmodule AOC.Day3 do
     defstruct data: 0, row_size: 0
 
     def new(row_size \\ 1000, x: x, y: y, width: width, height: height) do
-      cells_to_claim =
+      data =
         1..height
-        |> Enum.flat_map(fn row ->
+        |> Enum.reduce(0, fn row, acc ->
           1..width
-          |> Enum.map(fn col ->
-            col + x - 1 + (row + y - 1) * row_size
+          |> Enum.reduce(acc, fn col, acc2 ->
+            cell = col + x - 1 + (row + y - 1) * row_size
+            acc2 + (1 <<< cell)
           end)
         end)
 
-      data = cells_to_claim |> Enum.reduce(0, fn n, acc -> acc + (1 <<< n) end)
       %Area{data: data, row_size: row_size}
     end
 
