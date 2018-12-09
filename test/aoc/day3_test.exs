@@ -23,4 +23,196 @@ defmodule AOC.Day3Test do
       end
     end
   end
+
+  defmodule AreaTest do
+    use ExUnit.Case
+    use Bitwise
+
+    alias AOC.Day3.Area
+
+    test "can set region" do
+      #  0123456789
+      # 0..........
+      # 1..........
+      # 2.xxx......
+      # 3.xxx......
+      # 4.xxx......
+      # 5.xxx......
+      # 6..........
+      # 7..........
+      # 8..........
+      # 9..........
+      area = Area.new(10, x: 1, y: 2, width: 3, height: 4)
+
+      expected_set = [
+        1 + 2 * 10,
+        2 + 2 * 10,
+        3 + 2 * 10,
+        1 + 3 * 10,
+        2 + 3 * 10,
+        3 + 3 * 10,
+        1 + 4 * 10,
+        2 + 4 * 10,
+        3 + 4 * 10,
+        1 + 5 * 10,
+        2 + 5 * 10,
+        3 + 5 * 10
+      ]
+
+      expected_data =
+        expected_set
+        |> Enum.reduce(0, fn n, acc -> acc + (1 <<< n) end)
+
+      assert area.data == expected_data
+    end
+
+    describe "intersection" do
+      test "can find intersection" do
+        #  0123456789
+        # 0..........
+        # 1.aaa......
+        # 2.aaXb.....
+        # 3.aaXb.....
+        # 4...bb.....
+        # 5..........
+        # 6..........
+        # 7..........
+        # 8..........
+        # 9..........
+
+        area1 = Area.new(10, x: 1, y: 1, width: 3, height: 3)
+        area2 = Area.new(10, x: 3, y: 2, width: 2, height: 3)
+
+        intersection = Area.intersection(area1, area2)
+
+        expected_set = [
+          3 + 2 * 10,
+          3 + 3 * 10
+        ]
+
+        expected_data =
+          expected_set
+          |> Enum.reduce(0, fn n, acc -> acc + (1 <<< n) end)
+
+        assert intersection.data == expected_data
+      end
+
+      test "finds nothing when no intersection" do
+        #  0123456789
+        # 0..........
+        # 1.aaa......
+        # 2.aaa..bb..
+        # 3.aaa..bb..
+        # 4......bb..
+        # 5..........
+        # 6..........
+        # 7..........
+        # 8..........
+        # 9..........
+
+        area1 = Area.new(10, x: 1, y: 1, width: 3, height: 3)
+        area2 = Area.new(10, x: 6, y: 2, width: 2, height: 3)
+
+        intersection = Area.intersection(area1, area2)
+
+        expected_set = []
+
+        expected_data =
+          expected_set
+          |> Enum.reduce(0, fn n, acc -> acc + (1 <<< n) end)
+
+        assert intersection.data == expected_data
+      end
+    end
+
+    describe "union" do
+      test "can find union" do
+        #  0123456789
+        # 0..........
+        # 1.aaa......
+        # 2.aaXb.....
+        # 3.aaXb.....
+        # 4...bb.....
+        # 5..........
+        # 6..........
+        # 7..........
+        # 8..........
+        # 9..........
+
+        area1 = Area.new(10, x: 1, y: 1, width: 3, height: 3)
+        area2 = Area.new(10, x: 3, y: 2, width: 2, height: 3)
+
+        union = Area.union(area1, area2)
+
+        expected_set = [
+          1 + 1 * 10,
+          2 + 1 * 10,
+          3 + 1 * 10,
+          1 + 2 * 10,
+          2 + 2 * 10,
+          3 + 2 * 10,
+          4 + 2 * 10,
+          1 + 3 * 10,
+          2 + 3 * 10,
+          3 + 3 * 10,
+          4 + 3 * 10,
+          3 + 4 * 10,
+          4 + 4 * 10
+        ]
+
+        expected_data =
+          expected_set
+          |> Enum.reduce(0, fn n, acc -> acc + (1 <<< n) end)
+
+        assert union.data == expected_data
+      end
+
+      test "finds nothing when no intersection" do
+        #  0123456789
+        # 0..........
+        # 1.aaa......
+        # 2.aaa..bb..
+        # 3.aaa..bb..
+        # 4......bb..
+        # 5..........
+        # 6..........
+        # 7..........
+        # 8..........
+        # 9..........
+
+        area1 = Area.new(10, x: 1, y: 1, width: 3, height: 3)
+        area2 = Area.new(10, x: 6, y: 2, width: 2, height: 3)
+
+        intersection = Area.intersection(area1, area2)
+
+        expected_set = []
+
+        expected_data =
+          expected_set
+          |> Enum.reduce(0, fn n, acc -> acc + (1 <<< n) end)
+
+        assert intersection.data == expected_data
+      end
+    end
+
+    test "can count set cells" do
+      #  0123456789
+      # 0..........
+      # 1.aaa......
+      # 2.aaXb.....
+      # 3.aaXb.....
+      # 4...bb.....
+      # 5..........
+      # 6..........
+      # 7..........
+      # 8..........
+      # 9..........
+      area1 = Area.new(x: 1, y: 1, width: 3, height: 3)
+      area2 = Area.new(x: 3, y: 2, width: 2, height: 3)
+
+      union = Area.union(area1, area2)
+
+      assert Area.count(union) == 13
+    end
+  end
 end
