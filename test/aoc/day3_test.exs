@@ -32,6 +32,8 @@ defmodule AOC.Day3Test do
 
     @row_size 10
 
+    def c(x, y, row_size \\ @row_size), do: x + y * row_size
+
     test "can set region" do
       #  0123456789
       # 0..........
@@ -47,18 +49,18 @@ defmodule AOC.Day3Test do
       area = Area.new(@row_size, x: 1, y: 2, width: 3, height: 4)
 
       expected_set = [
-        1 + 2 * 10,
-        2 + 2 * 10,
-        3 + 2 * 10,
-        1 + 3 * 10,
-        2 + 3 * 10,
-        3 + 3 * 10,
-        1 + 4 * 10,
-        2 + 4 * 10,
-        3 + 4 * 10,
-        1 + 5 * 10,
-        2 + 5 * 10,
-        3 + 5 * 10
+        c(1, 2),
+        c(2, 2),
+        c(3, 2),
+        c(1, 3),
+        c(2, 3),
+        c(3, 3),
+        c(1, 4),
+        c(2, 4),
+        c(3, 4),
+        c(1, 5),
+        c(2, 5),
+        c(3, 5)
       ]
 
       expected_data =
@@ -87,10 +89,7 @@ defmodule AOC.Day3Test do
 
         intersection = Area.intersection(area1, area2)
 
-        expected_set = [
-          3 + 2 * 10,
-          3 + 3 * 10
-        ]
+        expected_set = [c(3, 2), c(3, 3)]
 
         expected_data =
           expected_set
@@ -136,30 +135,26 @@ defmodule AOC.Day3Test do
         # 3.aaXb.....
         # 4...bb.....
         # 5..........
-        # 6..........
-        # 7..........
-        # 8..........
-        # 9..........
 
-        area1 = Area.new(10, x: 1, y: 1, width: 3, height: 3)
-        area2 = Area.new(10, x: 3, y: 2, width: 2, height: 3)
+        area1 = Area.new(@row_size, x: 1, y: 1, width: 3, height: 3)
+        area2 = Area.new(@row_size, x: 3, y: 2, width: 2, height: 3)
 
         union = Area.union(area1, area2)
 
         expected_set = [
-          1 + 1 * 10,
-          2 + 1 * 10,
-          3 + 1 * 10,
-          1 + 2 * 10,
-          2 + 2 * 10,
-          3 + 2 * 10,
-          4 + 2 * 10,
-          1 + 3 * 10,
-          2 + 3 * 10,
-          3 + 3 * 10,
-          4 + 3 * 10,
-          3 + 4 * 10,
-          4 + 4 * 10
+          c(1,1),
+          c(2,1),
+          c(3,1),
+          c(1,2),
+          c(2,2),
+          c(3,2),
+          c(4,2),
+          c(1,3),
+          c(2,3),
+          c(3,3),
+          c(4,3),
+          c(3,4),
+          c(4,4)
         ]
 
         expected_data =
