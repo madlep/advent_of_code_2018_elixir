@@ -30,6 +30,8 @@ defmodule AOC.Day3Test do
 
     alias AOC.Day3.Area
 
+    @row_size 10
+
     test "can set region" do
       #  0123456789
       # 0..........
@@ -42,7 +44,7 @@ defmodule AOC.Day3Test do
       # 7..........
       # 8..........
       # 9..........
-      area = Area.new(10, x: 1, y: 2, width: 3, height: 4)
+      area = Area.new(@row_size, x: 1, y: 2, width: 3, height: 4)
 
       expected_set = [
         1 + 2 * 10,
@@ -80,8 +82,8 @@ defmodule AOC.Day3Test do
         # 8..........
         # 9..........
 
-        area1 = Area.new(10, x: 1, y: 1, width: 3, height: 3)
-        area2 = Area.new(10, x: 3, y: 2, width: 2, height: 3)
+        area1 = Area.new(@row_size, x: 1, y: 1, width: 3, height: 3)
+        area2 = Area.new(@row_size, x: 3, y: 2, width: 2, height: 3)
 
         intersection = Area.intersection(area1, area2)
 
@@ -110,8 +112,8 @@ defmodule AOC.Day3Test do
         # 8..........
         # 9..........
 
-        area1 = Area.new(10, x: 1, y: 1, width: 3, height: 3)
-        area2 = Area.new(10, x: 6, y: 2, width: 2, height: 3)
+        area1 = Area.new(@row_size, x: 1, y: 1, width: 3, height: 3)
+        area2 = Area.new(@row_size, x: 6, y: 2, width: 2, height: 3)
 
         intersection = Area.intersection(area1, area2)
 
@@ -180,8 +182,8 @@ defmodule AOC.Day3Test do
         # 8..........
         # 9..........
 
-        area1 = Area.new(10, x: 1, y: 1, width: 3, height: 3)
-        area2 = Area.new(10, x: 6, y: 2, width: 2, height: 3)
+        area1 = Area.new(@row_size, x: 1, y: 1, width: 3, height: 3)
+        area2 = Area.new(@row_size, x: 6, y: 2, width: 2, height: 3)
 
         intersection = Area.intersection(area1, area2)
 
