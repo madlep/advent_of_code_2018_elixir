@@ -153,7 +153,7 @@ defmodule AOC.Day3Test do
         assert union.data == expected_data
       end
 
-      test "finds nothing when no intersection" do
+      test "finds both when no intersection" do
         #  0123456789
         # 0..........
         # 1.aaa......
@@ -165,15 +165,31 @@ defmodule AOC.Day3Test do
         area1 = Area.new(@row_size, x: 1, y: 1, width: 3, height: 3)
         area2 = Area.new(@row_size, x: 6, y: 2, width: 2, height: 3)
 
-        intersection = Area.intersection(area1, area2)
+        union = Area.union(area1, area2)
 
-        expected_set = []
+        expected_set = [
+          c(1,1),
+          c(2,1),
+          c(3,1),
+          c(1,2),
+          c(2,2),
+          c(3,2),
+          c(1,3),
+          c(2,3),
+          c(3,3),
+          c(6,2),
+          c(7,2),
+          c(6,3),
+          c(7,3),
+          c(6,4),
+          c(7,4),
+        ]
 
         expected_data =
           expected_set
           |> Enum.reduce(0, fn n, acc -> acc + (1 <<< n) end)
 
-        assert intersection.data == expected_data
+        assert union.data == expected_data
       end
     end
 
