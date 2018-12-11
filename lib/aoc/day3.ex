@@ -37,7 +37,9 @@ defmodule AOC.Day3 do
     @enforce_keys [:data, :row_size]
     defstruct data: 0, row_size: 0
 
-    def new(row_size \\ 1000, x: x, y: y, width: width, height: height) do
+    @default_row_size 1000
+
+    def new(row_size \\ @default_row_size, x: x, y: y, width: width, height: height) do
       data =
         1..height
         |> Enum.reduce(0, fn row, acc ->
