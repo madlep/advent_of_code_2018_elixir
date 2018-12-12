@@ -42,11 +42,11 @@ defmodule AOC.Day3 do
           |> Enum.reject(fn claim -> !Area.empty?(Area.intersection(claim, new_claim)) end)
         end
 
-      %State{
-        good_claims: good_claims,
+      d(%State{
+        good_claims,
         claimed: Area.union(claimed, new_claim),
         overlaps: Area.union(overlaps, new_claim_overlap)
-      }
+      })
     end)
   end
 end
