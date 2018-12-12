@@ -33,7 +33,7 @@ defmodule AOC do
 
   for day <- @days do
     mod = Module.concat(AOC, "Day#{day}" |> String.to_atom())
-    Code.ensure_loaded?(mod)
+    Code.ensure_compiled?(mod)
 
     for part <- @parts do
       part_fun = "part#{part}" |> String.to_atom()
