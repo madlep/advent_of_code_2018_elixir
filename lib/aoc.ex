@@ -46,7 +46,6 @@ defmodule AOC do
 
           stream(data_file, fn data_stream ->
             {time, result} = :timer.tc(unquote(mod), unquote(part_fun), [data_stream])
-            # result = apply(unquote(mod), unquote(part_fun), [data_stream])
             {:ok, [day: unquote(day), part: unquote(part), result: result, time: time]}
           end)
         end
