@@ -3,6 +3,8 @@ defmodule AOC.Day3.Area do
 
   alias AOC.Day3.Area
 
+  import Destructure
+
   @enforce_keys [:data, :row_size]
   defstruct data: 0, row_size: 0, id: nil
 
@@ -10,7 +12,7 @@ defmodule AOC.Day3.Area do
 
   def empty(row_size \\ @default_row_size), do: %Area{data: 0, row_size: row_size}
 
-  def new(row_size \\ @default_row_size, id: id, x: x, y: y, width: width, height: height) do
+  def new(row_size \\ @default_row_size, d([id, x, y, width, height])) do
     data =
       1..height
       |> Enum.reduce(0, fn row, acc ->
@@ -20,10 +22,10 @@ defmodule AOC.Day3.Area do
         acc + (1 <<< to) - (1 <<< from)
       end)
 
-    %Area{data: data, row_size: row_size, id: id}
+    d(%Area{data, row_size, id})
   end
 
-  def count(%Area{data: data}), do: do_count(data, 0)
+  def count(d(%Area{data})), do: do_count(data, 0)
 
   @m1 0x5555555555555555
   @m2 0x3333333333333333
@@ -47,16 +49,16 @@ defmodule AOC.Day3.Area do
   end
 
   def intersection(
-        %Area{data: data1, row_size: row_size},
-        %Area{data: data2, row_size: row_size}
+        d(%Area{row_size, data: data1}),
+        d(%Area{row_size, data: data2})
       ),
-      do: %Area{row_size: row_size, data: data1 &&& data2}
+      do: d(%Area{row_size, data: data1 &&& data2})
 
   def intersection(%Area{row_size: _r1}, %Area{row_size: _r2}), do: {:error, :row_size_mismatch}
 
   def union(
-        %Area{data: data1, row_size: row_size},
-        %Area{data: data2, row_size: row_size}
+        d(%Area{row_size, data: data1}),
+        d(%Area{row_size, data: data2})
       ),
       do: %Area{row_size: row_size, data: data1 ||| data2}
 
