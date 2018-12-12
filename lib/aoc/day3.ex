@@ -5,11 +5,17 @@ defmodule AOC.Day3 do
     Area
   }
 
+
+  def part1(data) do
+    result = run(data)
+    Area.count(result.overlaps)
+  end
+
   defmodule State do
     defstruct claimed: Area.empty(), overlaps: Area.empty()
   end
 
-  def part1(data) do
+  defp run(data) do
     :erlang.process_flag(:min_heap_size, 200_000)
 
     data
@@ -25,7 +31,5 @@ defmodule AOC.Day3 do
         overlaps: Area.union(overlaps, new_claim_overlap)
       }
     end)
-    |> Map.get(:overlaps)
-    |> Area.count()
   end
 end
