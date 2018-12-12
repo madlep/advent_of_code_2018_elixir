@@ -28,5 +28,4 @@ defmodule AOC.Day3 do
     |> Map.get(:overlaps)
     |> Area.count()
   end
-
 end

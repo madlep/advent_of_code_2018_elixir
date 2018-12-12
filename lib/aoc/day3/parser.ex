@@ -17,7 +17,7 @@ defmodule AOC.Day3.Parser do
     |> ignore(string("x"))
     |> unwrap_and_tag(integer(min: 1), :height)
 
-    # #123 @ 3,2: 5x4
+  # #123 @ 3,2: 5x4
   defparsec(
     :claim,
     unwrap_and_tag(id, :id)
