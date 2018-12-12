@@ -10,14 +10,16 @@ defmodule AOC.Day3 do
   end
 
   def part1(data) do
+    :erlang.process_flag(:min_heap_size, 100_000)
     data
     |> Stream.map(fn line ->
       {:ok, tokens, _rest, _context, _line, _byte_offset} = Parser.claim(line)
       tokens
     end)
-    |> Enum.reduce(%State{}, fn [id: _id, x: x, y: y, width: w, height: h],
-                                %State{claimed: claimed, overlaps: overlaps} ->
-      new_claim = Area.new(x: x, y: y, width: w, height: h)
+    |> Task.async_stream(fn [id: _id, x: x, y: y, width: w, height: h] ->
+      Area.new(x: x, y: y, width: w, height: h)
+    end)
+    |> Enum.reduce(%State{}, fn {:ok, new_claim}, %State{claimed: claimed, overlaps: overlaps} ->
       new_claim_overlap = Area.intersection(claimed, new_claim)
 
       %State{
