@@ -12,11 +12,8 @@ defmodule AOC.Day3 do
   def part1(data) do
     :erlang.process_flag(:min_heap_size, 100_000)
     data
-    |> Stream.map(fn line ->
-      {:ok, tokens, _rest, _context, _line, _byte_offset} = Parser.claim(line)
-      tokens
-    end)
-    |> Task.async_stream(fn [id: _id, x: x, y: y, width: w, height: h] ->
+    |> Task.async_stream(fn line ->
+      {:ok, [id: _id, x: x, y: y, width: w, height: h], _rest, _context, _line, _byte_offset} = Parser.claim(line)
       Area.new(x: x, y: y, width: w, height: h)
     end)
     |> Enum.reduce(%State{}, fn {:ok, new_claim}, %State{claimed: claimed, overlaps: overlaps} ->
