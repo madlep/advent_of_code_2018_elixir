@@ -57,7 +57,7 @@ defmodule AOC.Day3Test do
       # 4.xxx......
       # 5.xxx......
       # 6..........
-      area = Area.new(@row_size, x: 1, y: 2, width: 3, height: 4)
+      area = Area.new(@row_size, id: 123, x: 1, y: 2, width: 3, height: 4)
 
       expected_set = [
         c(1, 2),
@@ -91,8 +91,8 @@ defmodule AOC.Day3Test do
         # 4...bb.....
         # 5..........
 
-        area1 = Area.new(@row_size, x: 1, y: 1, width: 3, height: 3)
-        area2 = Area.new(@row_size, x: 3, y: 2, width: 2, height: 3)
+        area1 = Area.new(@row_size, id: 123, x: 1, y: 1, width: 3, height: 3)
+        area2 = Area.new(@row_size, id: 124, x: 3, y: 2, width: 2, height: 3)
 
         intersection = Area.intersection(area1, area2)
 
@@ -114,8 +114,8 @@ defmodule AOC.Day3Test do
         # 4......bb..
         # 5..........
 
-        area1 = Area.new(@row_size, x: 1, y: 1, width: 3, height: 3)
-        area2 = Area.new(@row_size, x: 6, y: 2, width: 2, height: 3)
+        area1 = Area.new(@row_size, id: 123, x: 1, y: 1, width: 3, height: 3)
+        area2 = Area.new(@row_size, id: 124, x: 6, y: 2, width: 2, height: 3)
 
         intersection = Area.intersection(area1, area2)
 
@@ -139,8 +139,8 @@ defmodule AOC.Day3Test do
         # 4...bb.....
         # 5..........
 
-        area1 = Area.new(@row_size, x: 1, y: 1, width: 3, height: 3)
-        area2 = Area.new(@row_size, x: 3, y: 2, width: 2, height: 3)
+        area1 = Area.new(@row_size, id: 123, x: 1, y: 1, width: 3, height: 3)
+        area2 = Area.new(@row_size, id: 123, x: 3, y: 2, width: 2, height: 3)
 
         union = Area.union(area1, area2)
 
@@ -176,8 +176,8 @@ defmodule AOC.Day3Test do
         # 4......bb..
         # 5..........
 
-        area1 = Area.new(@row_size, x: 1, y: 1, width: 3, height: 3)
-        area2 = Area.new(@row_size, x: 6, y: 2, width: 2, height: 3)
+        area1 = Area.new(@row_size, id: 123, x: 1, y: 1, width: 3, height: 3)
+        area2 = Area.new(@row_size, id: 123, x: 6, y: 2, width: 2, height: 3)
 
         union = Area.union(area1, area2)
 
@@ -215,8 +215,8 @@ defmodule AOC.Day3Test do
       # 3.aaXb.....
       # 4...bb.....
       # 5..........
-      area1 = Area.new(x: 1, y: 1, width: 3, height: 3)
-      area2 = Area.new(x: 3, y: 2, width: 2, height: 3)
+      area1 = Area.new(id: 123, x: 1, y: 1, width: 3, height: 3)
+      area2 = Area.new(id: 123, x: 3, y: 2, width: 2, height: 3)
 
       union = Area.union(area1, area2)
 

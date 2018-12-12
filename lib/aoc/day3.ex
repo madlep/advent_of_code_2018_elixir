@@ -14,8 +14,8 @@ defmodule AOC.Day3 do
 
     data
     |> Task.async_stream(fn line ->
-      {:ok, [id: _id, x: x, y: y, width: w, height: h], _rest, _context, _line, _byte_offset} = Parser.claim(line)
-      Area.new(x: x, y: y, width: w, height: h)
+      {:ok, [id: id, x: x, y: y, width: w, height: h], _rest, _context, _line, _byte_offset} = Parser.claim(line)
+      Area.new(id: id, x: x, y: y, width: w, height: h)
     end)
     |> Enum.reduce(%State{}, fn {:ok, new_claim}, %State{claimed: claimed, overlaps: overlaps} ->
       new_claim_overlap = Area.intersection(claimed, new_claim)

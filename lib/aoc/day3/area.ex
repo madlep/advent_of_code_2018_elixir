@@ -4,13 +4,13 @@ defmodule AOC.Day3.Area do
   alias AOC.Day3.Area
 
   @enforce_keys [:data, :row_size]
-  defstruct data: 0, row_size: 0
+  defstruct data: 0, row_size: 0, id: nil
 
   @default_row_size 1000
 
   def empty(row_size \\ @default_row_size), do: %Area{data: 0, row_size: row_size}
 
-  def new(row_size \\ @default_row_size, x: x, y: y, width: width, height: height) do
+  def new(row_size \\ @default_row_size, id: id, x: x, y: y, width: width, height: height) do
     data =
       1..height
       |> Enum.reduce(0, fn row, acc ->
@@ -20,7 +20,7 @@ defmodule AOC.Day3.Area do
         acc + (1 <<< to) - (1 <<< from)
       end)
 
-    %Area{data: data, row_size: row_size}
+    %Area{data: data, row_size: row_size, id: id}
   end
 
   def count(%Area{data: data}), do: do_count(data, 0)
