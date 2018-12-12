@@ -10,7 +10,8 @@ defmodule AOC.Day3 do
   end
 
   def part1(data) do
-    :erlang.process_flag(:min_heap_size, 100_000)
+    :erlang.process_flag(:min_heap_size, 200_000)
+
     data
     |> Task.async_stream(fn line ->
       {:ok, [id: _id, x: x, y: y, width: w, height: h], _rest, _context, _line, _byte_offset} = Parser.claim(line)
