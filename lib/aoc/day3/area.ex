@@ -16,7 +16,7 @@ defmodule AOC.Day3.Area do
       |> Enum.reduce(0, fn row, acc ->
         cell_y = (row + y - 1) * row_size
         from = x + cell_y
-        to = x + width + cell_y
+        to = from + width
         acc + (1 <<< to) - (1 <<< from)
       end)
 
