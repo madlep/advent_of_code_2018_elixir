@@ -39,7 +39,7 @@ defmodule AOC.Day3 do
           [new_claim | good_claims]
         else
           good_claims
-          |> Enum.reject(fn (claim) -> !Area.empty?(Area.intersection(claim, new_claim)) end)
+          |> Enum.reject(fn claim -> !Area.empty?(Area.intersection(claim, new_claim)) end)
         end
 
       %State{
