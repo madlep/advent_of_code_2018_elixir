@@ -61,4 +61,7 @@ defmodule AOC.Day3.Area do
       do: %Area{row_size: row_size, data: data1 ||| data2}
 
   def union(%Area{row_size: _r1}, %Area{row_size: _r2}), do: {:error, :row_size_mismatch}
+
+  def empty?(%Area{data: 0}), do: true
+  def empty?(%Area{data: _any}), do: false
 end
