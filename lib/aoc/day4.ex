@@ -11,9 +11,20 @@ defmodule AOC.Day4 do
 
     most_asleep_guard = guards |> Enum.max_by(fn guard -> guard.sleep_total end)
 
-    most_asleep_minute = most_asleep_guard |> Guard.most_asleep_minute()
+    {min, _slept} = most_asleep_guard |> Guard.most_asleep_minute()
 
-    most_asleep_guard.id * most_asleep_minute
+    most_asleep_guard.id * min
+  end
+
+  def part2(data) do
+    data
+    |> project_guards()
+    |> Enum.map(fn guard ->
+      {min, slept} = Guard.most_asleep_minute(guard)
+      {guard.id, min, slept}
+    end)
+    |> Enum.max_by(fn {_id, _min, slept} -> slept end)
+    |> (fn {id, min, _slept} -> id * min end).()
   end
 
   defp project_guards(data) do
@@ -82,8 +93,7 @@ defmodule AOC.Day4 do
 
     def most_asleep_minute(d(%Guard{sleep_mins})) do
       sleep_mins
-      |> Enum.max_by(fn {_min, slept} -> slept end)
-      |> (fn {min, _slept} -> min end).()
+      |> Enum.max_by(fn {_min, slept} -> slept end, fn -> {0, 0} end)
     end
   end
 end
