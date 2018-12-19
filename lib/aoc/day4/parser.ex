@@ -30,7 +30,7 @@ defmodule AOC.Day4.Parser do
 
   defp decode_event(["wakes up"]), do: :wake
   defp decode_event(["falls asleep"]), do: :asleep
-  defp decode_event([begin: begin]), do: {:begin, begin}
+  defp decode_event(begin: begin), do: {:begin, begin}
 
   # "[1518-11-01 00:00] Guard #10 begins shift"
   # "[1518-11-01 00:05] falls asleep"
