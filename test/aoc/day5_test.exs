@@ -18,4 +18,10 @@ defmodule AOC.Day5Test do
       end
     end
   end
+
+  describe "part 2" do
+    test "handles provided example" do
+      assert AOC.Day5.part2("dabAcCaCBAcCcaDA" |> stream) == 4
+    end
+  end
 end
