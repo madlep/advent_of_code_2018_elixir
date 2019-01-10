@@ -22,7 +22,8 @@ defmodule AOC.MixProject do
   defp deps do
     [
       {:nimble_parsec, "~> 0.4.0"},
-      {:destructure, "~> 0.2.3"}
+      {:destructure, "~> 0.2.3"},
+      {:dialyxir, "~> 1.0.0-rc.4", only: [:dev], runtime: false}
     ]
   end
 end
