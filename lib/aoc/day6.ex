@@ -13,7 +13,7 @@ defmodule AOC.Day6 do
       |> reject_infinite_coords(extents)
       |> coord_areas()
       |> Map.values()
-      |> Enum.sort()
+      |> Enum.max()
     end
   end
 
@@ -48,11 +48,11 @@ defmodule AOC.Day6 do
     for x <- x_min..x_max, y <- y_min..y_max, do: {x, y}
   end
 
-  @spec find_all_closest(points :: list(coord), coords:: list(coord())) :: Enum.t()
+  @spec find_all_closest(points :: list(coord), coords :: list(coord())) :: Enum.t()
   def find_all_closest(points, coords) do
     points
-      |> Stream.map(&find_closest(&1, coords))
-      |> Stream.reject(fn x -> x == :tie end)
+    |> Stream.map(&find_closest(&1, coords))
+    |> Stream.reject(fn x -> x == :tie end)
   end
 
   @spec find_closest(point :: coord(), coords :: [coord()]) :: coord() | :tie
@@ -78,11 +78,9 @@ defmodule AOC.Day6 do
     x == x_min || x == x_max || y == y_min || y == y_max
   end
 
-  @spec coord_areas(list(coord())) :: %{required(coord()) => integer()}
+  @spec coord_areas(Enum.t()) :: %{required(coord()) => integer()}
   def coord_areas(coords) do
     coords
-      |> Enum.reduce(%{}, fn coord, acc -> Map.update(acc, coord, 1, &(&1 + 1)) end)
-      |> Enum.to_list()
-      |> Enum.sort_by(fn {k,v} -> v end)
+    |> Enum.reduce(%{}, fn coord, acc -> Map.update(acc, coord, 1, &(&1 + 1)) end)
   end
 end
