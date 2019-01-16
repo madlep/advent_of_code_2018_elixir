@@ -1,4 +1,17 @@
 defmodule AOC do
+
+  def start(_type, _args) do
+    import Supervisor.Spec, warn: false
+
+    main_viewport_config = Application.get_env(:aoc, :viewport)
+
+    children = [
+      supervisor(Scenic, viewports: [main_viewport_config])
+    ]
+
+    Supervisor.start_link(children, strategy: :one_for_one)
+  end
+
   @days 1..25
   @parts 1..2
 
@@ -38,14 +51,15 @@ defmodule AOC do
     for part <- @parts do
       part_fun = "part#{part}" |> String.to_atom()
 
-      if function_exported?(mod, part_fun, 1) do
+      if function_exported?(mod, part_fun, 2) do
         runner_fun = "day#{day}_part#{part}" |> String.to_atom()
 
-        def unquote(runner_fun)() do
+        def unquote(runner_fun)(visualiser) do
           data_file = "priv/data/day#{unquote(day)}.txt"
 
           stream(data_file, fn data_stream ->
-            {time, result} = :timer.tc(unquote(mod), unquote(part_fun), [data_stream])
+            {time, result} = :timer.tc(unquote(mod), unquote(part_fun), [data_stream, visualiser])
+            visualiser.({:result, result: result, time: time})
             {:ok, [day: unquote(day), part: unquote(part), result: result, time: time]}
           end)
         end

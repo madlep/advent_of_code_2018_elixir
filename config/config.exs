@@ -2,6 +2,19 @@
 # and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
 
+config :aoc, :viewport, %{
+  name: :main_viewport,
+  size: {1200, 800},
+  default_scene: {AOC.Scene.Main, []},
+  drivers: [
+    %{
+      module: Scenic.Driver.Glfw,
+      name: :glfw,
+      opts: [resizeable: false, title: "AOC"]
+    }
+  ]
+}
+
 # This configuration is loaded before any dependency and is restricted
 # to this project. If another project depends on this project, this
 # file won't be loaded nor affect the parent project. For this reason,

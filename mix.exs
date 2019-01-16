@@ -6,6 +6,7 @@ defmodule AOC.MixProject do
       app: :aoc,
       version: "0.1.0",
       elixir: "~> 1.7",
+      build_embedded: true,
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -14,6 +15,7 @@ defmodule AOC.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
+      mod: {AOC, []},
       extra_applications: [:logger]
     ]
   end
@@ -23,7 +25,10 @@ defmodule AOC.MixProject do
     [
       {:nimble_parsec, "~> 0.4.0"},
       {:destructure, "~> 0.2.3"},
-      {:dialyxir, "~> 1.0.0-rc.4", only: [:dev], runtime: false}
+      {:dialyxir, "~> 1.0.0-rc.4", only: [:dev], runtime: false},
+
+      {:scenic, "~> 0.9"},
+      {:scenic_driver_glfw, "~> 0.9"}
     ]
   end
 end

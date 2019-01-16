@@ -1,8 +1,11 @@
 defmodule AOC.Day1 do
-  def part1(data_stream) do
+  def part1(data_stream, visualiser) do
     data_stream
     |> Stream.map(&String.to_integer/1)
-    |> Enum.sum()
+    |> Stream.scan({0, nil}, fn n, {sum, _n} -> {sum + n, n} end)
+    |> Stream.each(fn {sum, n} -> visualiser.({:frequency, sum: sum, n: n}) end)
+    |> Enum.at(-1)
+    |> fn {sum, _n} -> sum end.()
   end
 
   def part2(data_stream) do
