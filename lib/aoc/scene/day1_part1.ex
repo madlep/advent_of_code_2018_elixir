@@ -17,13 +17,14 @@ defmodule AOC.Scene.Day1Part1 do
 
   def init(_args, _opts) do
     push_graph(@graph)
-    {:ok, %{graph: @graph, freqs: []}}
+    {:ok, %{graph: @graph, freqs: [], freqs_to_draw: []}}
   end
 
   def filter_event({:click, :run}, _from, state) do
     visualiser = build_visualiser()
     Task.async(fn -> AOC.day1_part1(visualiser) end)
-    {:stop, state}
+    new_state = %{state | freqs: [], freqs_to_draw: []}
+    {:stop, new_state}
   end
 
   def filter_event({:frequency, sum: sum, n: n}, _from, state = %{freqs: freqs}) do
@@ -32,17 +33,40 @@ defmodule AOC.Scene.Day1Part1 do
     {:stop, new_state}
   end
 
+  @frame_ms 30
+  @freqs_per_frame 10
+
   def filter_event({:result, result: result, time: time}, _from, state = %{graph: graph, freqs: freqs}) do
-    freqs = Enum.reverse(freqs)
     graph =
       graph
       |> Graph.modify(:result, &text(&1, "result: #{result}"))
       |> Graph.modify(:time, &text(&1, "execution time: #{time}µs"))
-      |> Graph.modify(:freqs, &path(&1, path_steps(freqs)))
+      |> Graph.modify(:freqs, &path(&1, []))
+      |> push_graph()
+    :timer.send_after(@frame_ms, :draw_frame)
+    {:stop, %{state | graph: graph, freqs: Enum.reverse(freqs)} }
+  end
+
+  def handle_info(:draw_frame, state = %{freqs: []}) do
+    new_state = %{state |  freqs_to_draw: []}
+    {:noreply, new_state}
+  end
+
+  def handle_info(:draw_frame, state = %{graph: graph, freqs: freqs, freqs_to_draw: freqs_to_draw}) do
+    {frame_freqs, freqs} = Enum.split(freqs, @freqs_per_frame)
+    freqs_to_draw = freqs_to_draw ++ frame_freqs
+    graph =
+      graph
+      |> Graph.modify(:freqs, &path(&1, path_steps(freqs_to_draw)))
       |> push_graph()
 
-    {:stop, %{state | graph: graph} }
+    new_state = %{state | freqs: freqs, freqs_to_draw: freqs_to_draw, graph: graph}
+    :timer.send_after(@frame_ms, :draw_frame)
+    {:noreply, new_state}
   end
+
+  def handle_info(_, state), do: {:noreply, state}
+
 
   defp build_visualiser() do
     this = self()
