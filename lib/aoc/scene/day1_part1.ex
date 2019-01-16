@@ -9,9 +9,9 @@ defmodule AOC.Scene.Day1Part1 do
 
   @graph Graph.build(font: :roboto, font_size: 24, theme: :dark)
   |> text("Day 1, part 1", translate: {100, 100})
-  |> button("run", translate: {100, 140}, id: :run)
-  |> text("result:", translate: {100, 200}, id: :result)
-  |> text("exectuion time:", translate: {100, 240}, id: :time)
+  |> button("run", translate: {250, 80}, id: :run)
+  |> text("result:", translate: {350, 100}, id: :result)
+  |> text("exectuion time:", translate: {500, 100}, id: :time)
   |> path([], stroke: {4, :blue}, cap: :round, id: :freqs)
   |> Nav.add_to_graph(__MODULE__)
 
@@ -27,11 +27,13 @@ defmodule AOC.Scene.Day1Part1 do
   end
 
   def filter_event({:frequency, sum: sum, n: n}, _from, state = %{freqs: freqs}) do
+    IO.inspect("received frequency sum=#{sum} n=#{n}")
     new_state = %{state | freqs: [{sum, n}|freqs]}
     {:stop, new_state}
   end
 
   def filter_event({:result, result: result, time: time}, _from, state = %{graph: graph, freqs: freqs}) do
+    freqs = Enum.reverse(freqs)
     graph =
       graph
       |> Graph.modify(:result, &text(&1, "result: #{result}"))
@@ -47,10 +49,10 @@ defmodule AOC.Scene.Day1Part1 do
     fn event -> Scenic.Scene.send_event(this, event) end
   end
 
-  @path_x_origin 100
-  @path_y_origin 300
-  @path_height 400
-  @path_width 800
+  @path_x_origin 50
+  @path_y_origin 150
+  @path_height 600
+  @path_width 1100
 
   defp path_steps(freqs) do
     {{min, _n1}, {max, _n2}} = Enum.min_max_by(freqs, fn {sum, _n} -> sum end)
@@ -65,13 +67,12 @@ defmodule AOC.Scene.Day1Part1 do
 
     steps = freqs
             |> Enum.with_index(1)
-            |> Enum.map(fn {{sum, _n}, i} -> {:line_to, @path_x_origin + (i * x_scale), @path_y_origin + y_offset + (sum * y_scale)} end)
+            |> Enum.map(fn {{sum, _n}, i} -> {:line_to, @path_x_origin + (i * x_scale), @path_y_origin + @path_height - y_offset - (sum * y_scale)} end)
 
-    Enum.each(steps, &IO.inspect/1)
 
     List.flatten([
       :begin,
-      {:move_to, @path_x_origin, @path_y_origin + y_offset},
+      {:move_to, @path_x_origin, @path_y_origin + @path_height + y_offset},
       steps,
     ])
   end
